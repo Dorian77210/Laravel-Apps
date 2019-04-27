@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('quizz_user', function (Blueprint $table) {
             $table->string( 'login', 100 );
             $table->primary( 'login' );
 
@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string( 'email', 100 );
             $table->unique( 'email' );
 
-            $table->timestamp( 'create_at' )->useCurrent();
+            $table->timestamp( 'created_at' )->useCurrent();
 
             $table->string( 'password', 256 );
         });

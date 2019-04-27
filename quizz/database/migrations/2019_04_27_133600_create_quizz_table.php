@@ -19,7 +19,7 @@ class CreateQuizzTable extends Migration
             $table->string( 'user_login', 100 );
             $table->foreign( 'user_login' )
                   ->references( 'login' )
-                  ->on( 'users' )
+                  ->on( 'quizz_user' )
                   ->onDelete( 'cascade' );
 
             $table->string( 'title', 100 );

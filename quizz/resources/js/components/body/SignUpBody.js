@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { css } from '@emotion/core';
-import{ ClimbingBoxLoader } from 'react-spinners';
+import { ClimbingBoxLoader } from 'react-spinners';
 
 import axios from 'axios';
 
@@ -11,14 +11,14 @@ import ErrorModal from '../modal/ErrorModal';
 
 const override = css`
 display: block;
-position: fixed;
-z-index: 1031;
+position: absolute;
+z-index: 2333;
 margin: 0 auto;
 top: 40vh;
 `;
 
 
-export default class SignUpBody extends Component {
+export default class SignUpBody extends Component {
 
     constructor(props) {
         super(props);
@@ -45,7 +45,7 @@ export default class SignUpBody extends Component {
         event.preventDefault();
         const modal = this.modalRef.current;
 
-        if(!this._areValidPasswords()) {
+        if (!this._areValidPasswords()) {
             modal.setState({
                 show: true,
                 content: "The passwords don't match or they are empty",
@@ -63,52 +63,45 @@ export default class SignUpBody extends Component {
             lastName: this.state.lastName
         };
 
-        this.setState( { loading: true } );
-        axios.post( '/sign-up', user )
-             .then(res => {
-                 console.log("res", res);
-                this.setState( { loading: false } );
+        this.setState({ loading: true });
+        axios.post('/sign-up', user)
+            .then(res => {
+                console.log(res);
+                this.setState({ loading: false });
                 modal.setState({
                     show: true,
-                    content: res.data.content,
+                    content: res.data.message,
                     title: res.data.title
                 });
-             })
-             .catch(error => {
-                 console.log("Error", error);
-                 if(error.response) {
-                     modal.setState({
-                         show: true,
-                         content: data.content,
-                         title: data.title
-                     })
-                 }
+            })
+            .catch(error => {
+                alert('ok');
+                console.log(error);
 
-                 this.setState( { loading: false } );
-             });
+                this.setState({ loading: false });
+            });
     }
 
     _areValidPasswords() {
         const password = this.state.password;
         const confirmationPassword = this.state.confirmationPassword;
 
-        if((password.trim() == "") || (confirmationPassword.trim() == "")) return false;
+        if ((password.trim() == "") || (confirmationPassword.trim() == "")) return false;
         return password === confirmationPassword;
     }
 
     render() {
-
         return (
-            <div class="form">
-            <ClimbingBoxLoader
-                css={override}
-                sizeUnit={"px"}
-                size={15}
-                color={'#123abc'}
-                loading={this.state.loading}
-            />
+            <div className="form">
+                <ClimbingBoxLoader
+                    css={override}
+                    sizeUnit={"px"}
+                    size={15}
+                    color={'#123abc'}
+                    loading={this.state.loading}
+                />
 
-            <h3 className="text-center">Create your account now ! You will able to create quizz and to have other features !</h3>
+                <h3 className="text-center">Create your account now ! You will able to create quizz and to have other features !</h3>
 
                 <form onSubmit={(event) => this.submitForm(event)}>
                     <Input
@@ -122,14 +115,14 @@ export default class SignUpBody extends Component {
                         type="text"
                         textContent="Login"
                         changeValue={this.changeValue}
-                        name="Login"
+                        name="login"
                     />
 
                     <Input
                         type="text"
                         textContent="First Name"
                         changeValue={this.changeValue}
-                        name="firstname"
+                        name="firstName"
                     />
 
                     <Input

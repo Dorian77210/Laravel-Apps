@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, NavLink, Route } from 'react-router-dom';
 
+import { MDBIcon } from "mdbreact"
+
 export default class IndexHeader extends Component {
 
     render() {
@@ -19,7 +21,7 @@ export default class IndexHeader extends Component {
                                 className="nav-link"
                                 activeClassName="active"
                             >
-                                Home
+                                <MDBIcon icon="home" />Home
                             </NavLink>
                         </li>
                         <li className="nav-item">

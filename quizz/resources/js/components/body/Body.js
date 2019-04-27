@@ -9,7 +9,7 @@ export class Body extends Component {
 
     render() {
         return (
-            <div class="body">
+            <div className="body">
                 <Route exact path="/" component={IndexBody} />
                 <Route path="/sign-in" component={SignInBody} />
                 <Route path="/sign-up" component={SignUpBody} />

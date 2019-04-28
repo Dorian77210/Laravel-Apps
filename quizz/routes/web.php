@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post( '/sign-up', 'Api\UserController@store');
+Route::group( [ 'middleware' => 'api-header' ], function() {
+    Route::post( '/sign-in', 'Api\UserController@login' );
+    Route::post( '/sign-up', 'Api\UserController@store');
+});
+
+
 
 ?>

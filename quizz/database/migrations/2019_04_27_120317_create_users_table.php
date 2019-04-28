@@ -16,8 +16,10 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('quizz_user', function (Blueprint $table) {
+            $table->bigIncrements( 'id' );
+
             $table->string( 'login', 100 );
-            $table->primary( 'login' );
+            $table->unique( 'login' );
 
             $table->string( 'lastname', 100 );
             $table->string( 'firstname', 100 );
@@ -26,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->unique( 'email' );
 
             $table->timestamp( 'created_at' )->useCurrent();
+            $table->timestamp( 'updated_at' )->useCurrent();
 
             $table->string( 'password', 256 );
         });

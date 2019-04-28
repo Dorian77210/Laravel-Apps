@@ -66,7 +66,6 @@ export default class SignUpBody extends Component {
         this.setState({ loading: true });
         axios.post('/sign-up', user)
             .then(res => {
-                console.log(res);
                 this.setState({ loading: false });
                 modal.setState({
                     show: true,
@@ -75,7 +74,6 @@ export default class SignUpBody extends Component {
                 });
             })
             .catch(error => {
-                alert('ok');
                 console.log(error);
 
                 this.setState({ loading: false });

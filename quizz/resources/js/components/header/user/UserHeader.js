@@ -44,8 +44,9 @@ export default class UserHeader extends Component {
                     </Nav>
 
                     <Nav>
+                    <Button variant="outline-primary" onClick={ (event) => this.goTo(event, '/user/dashboard') }>Dashboard</Button>
                         <NavDropdown
-                            className="basic-nav-dropdown float-right"
+                            className="basic-nav-dropdown pl-xl-4"
                             title={this.state.user.email}
                         >
                             <NavDropdown.Item

@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import {Link, Route} from 'react-router-dom';
 
 import IndexHeader from './IndexHeader';
-import UserHeader from './UserHeader';
+import UserHeader from './../header/user/UserHeader';
 
 export default class Header extends Component {
 
     render() {
         return (
             <div className="header">
-                <Route path="/" component={IndexHeader} />
+                <Route exact path={["/", "/sign-in", "/sign-up", "/about"]} component={IndexHeader} />
                 <Route path="/log" component={UserHeader} />
+                <Route exact path={[ '/user/dashboard' ] } component={UserHeader} />
             </div>
         )
     }

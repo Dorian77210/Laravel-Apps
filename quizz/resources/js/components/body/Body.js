@@ -5,6 +5,7 @@ import IndexBody from './IndexBody';
 import SignInBody from './SignInBody';
 import SignUpBody from './SignUpBody';
 import UserHome from './user/UserHome';
+import ErrorBody from './ErrorBody';
 
 export class Body extends Component {
 
@@ -12,9 +13,10 @@ export class Body extends Component {
         return (
             <div className="body" style={{marginTop: '5%'}}>
                 <Route exact path="/" component={IndexBody} />
-                <Route path="/sign-in" component={SignInBody} />
-                <Route path="/sign-up" component={SignUpBody} />
-                <Route path="/user/dashboard" component={UserHome} />
+                <Route exact path="/sign-in" component={SignInBody} />
+                <Route exact path="/sign-up" component={SignUpBody} />
+                <Route exact path="/user/dashboard" component={UserHome} />
+                <Route exact path="/error" component={ErrorBody} />
             </div>
         )
     }

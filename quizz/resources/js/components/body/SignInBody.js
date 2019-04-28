@@ -68,6 +68,7 @@ export default class SignInBody extends Component {
              })
              .catch(error => {
                 console.log(error);
+                const modal = this.modalRef.current;
                 modal.setState({
                     show: true,
                     title: 'Error',

@@ -118,8 +118,6 @@ class UserController extends Controller {
         $json = null;
 
         if( $user && Hash::check( $password, $user->password)) {
-            $token = self::getToken($user->email, $password );
-            $user->auth_token = $token;
             $user->save();
             $json = [
                 'success'       =>      true,
@@ -128,16 +126,20 @@ class UserController extends Controller {
                         'email'     =>      $user->email,
                         'firstname' =>      $user->firstname,
                         'lastname'  =>      $user->lastname,
-                        'token'     =>      $user->auth_token
                     ]
                 ];
+
         } else {
             $json = [
                 'success'       =>      false,
                 'title'         =>      'Auth failed',
                 'message'       =>      'The login/email or the password is wrong. Please check your credentials.'
             ];
+
+            return response()->json( $json );
         }
+
+        $request->session()->put([ 'user' => $json['user'] ]);
 
         return response()->json( $json, 201 );
     }

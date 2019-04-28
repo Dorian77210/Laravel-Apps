@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group( [ 'middleware' => [ 'jwt-auth', 'api-header' ] ], function() {
-    // all routes here are protected
+    Route::get( '/user/quizzes', 'Api\QuizzController@quizzes' );
 });
 
 Route::group( [ 'middleware' => 'api-header' ], function() {

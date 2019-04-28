@@ -74,8 +74,6 @@ export default class SignUpBody extends Component {
                 });
             })
             .catch(error => {
-                console.log(error);
-
                 this.setState({ loading: false });
             });
     }

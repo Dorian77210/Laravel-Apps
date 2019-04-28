@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import HomePresentation from './home/HomePresentation';
 import Chart from './home/ChartExample';
+import ParticipationChartExample from './home/ParticipationChartExample';
 
 export default class IndexBody extends Component {
 
@@ -12,6 +13,10 @@ export default class IndexBody extends Component {
                 <HomePresentation />
                 <br/>
                 <Chart />
+                <br/>
+                <ParticipationChartExample />
+                <br />
+                <br />
             </div>
         )
     }

@@ -36,6 +36,7 @@ export default class UserHome extends Component {
         return (
             <div>
                 <div className="text-center">
+                    <br />
                     Welcome to your home ! You could show your quizzes and surveys in the board below and create new.
                 </div>
                 <UserContainer history={this.props.history} />

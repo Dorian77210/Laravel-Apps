@@ -23,22 +23,27 @@ class QuizzController extends Controller {
     }
 
     public function quizzes(Request $request) {
-        $a = 10;
-
         $user = $request->session()->get( 'user' );
         $login = $user[ 'login' ];
 
         //retrieve the quizzes
         $quizzes = Quizz::where( 'user_login', $login )->get();
 
-        $json = [];
-        $json[ 'data' ] = [];
+        $data = [];
 
-        $quizzes->each( function( $quizz, $key ) use( $json ) {
+        foreach( $quizzes as $quizz ) {
+            $jsonQuizz = [
+                'title'      =>          $quizz->title,
+                'created_at' =>          $quizz->created_at->format('Y-m-d'),
+                'is_private' =>          $quizz->is_private == 1 ? true : false,
+                'is_active'  =>          $quizz->is_active == 1 ? true : false,
+                'quizz_ID'   =>          $quizz->quizz_ID
+            ];
 
-        });
+            array_push( $data, $jsonQuizz );
+        }
 
-        return response()->json( $json );
+        return response()->json( [ 'quizzes' => $data ] );
     }
 
     public function show($id) {

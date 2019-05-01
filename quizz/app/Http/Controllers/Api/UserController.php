@@ -83,6 +83,27 @@ class UserController extends Controller {
 
     }
 
+    public function logout(Request $request) {
+        if( $request->session()->has( 'user' ) ) {
+            $request->session()->forget( 'user' );
+            $request->session()->flush();
+
+            $json = [
+                'success'       =>          true
+            ];
+
+            return response()->json( $json );
+        }
+
+        $json = [
+            'success'       =>      false,
+            'reason'        =>      'Session invalid'
+        ];
+
+        return response()->json( $json );
+
+    }
+
     private function getToken($email, $password) {
         $token = null;
         $json = [];

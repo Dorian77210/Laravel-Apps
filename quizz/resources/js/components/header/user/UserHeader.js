@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, NavLink, Route } from 'react-router-dom';
 import { Navbar, Nav, Form, Button, FormControl, NavDropdown } from 'react-bootstrap';
 
+import axios from 'axios';
 
 export default class UserHeader extends Component {
 
     constructor() {
         super();
+        if(!localStorage['appData']) this.props.history.push( '/error' );
         const appData = JSON.parse(localStorage['appData']);
         const userData = appData.userData;
         this.state = {
@@ -24,6 +26,20 @@ export default class UserHeader extends Component {
 
     logout(event) {
         event.preventDefault();
+        // send request to logout
+        axios.post( '/user/logout/' )
+             .then( res => {
+                const data = res.data;
+                if(data.success) {
+                    localStorage[ 'appData' ] = {};
+                    this.props.history.push( '/' );
+                } else {
+                    this.props.history.push( '/error' );
+                }
+             })
+             .catch( error => {
+
+             });
     }
 
     render() {

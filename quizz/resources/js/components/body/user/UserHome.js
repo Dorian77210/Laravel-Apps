@@ -3,12 +3,19 @@ import React, { Component } from 'react';
 import ErrorModal from '../../modal/ErrorModal';
 
 import axios from 'axios';
+import UserContainer from './UserContainer';
+import WelcomeModal from '../../modal/WelcomeModal';
 
 export default class UserHome extends Component {
 
     constructor() {
         super();
         this.modalRef = React.createRef();
+
+        const storage = JSON.parse( localStorage[ 'appData' ] );
+        this.state = {
+            user: storage.userData
+        };
     }
 
     componentWillMount() {
@@ -27,16 +34,12 @@ export default class UserHome extends Component {
     }
     render() {
         return (
-            <div>Welcome to your home
-
-
-
-                {/*Error modal */}
-                <ErrorModal
-                    content=""
-                    title=""
-                    ref={this.modalRef}
-                />
+            <div>
+                <div className="text-center">
+                    Welcome to your home ! You could show your quizzes and surveys in the board below and create new.
+                </div>
+                <UserContainer history={this.props.history} />
+                { this.state.user.isComeBack && <WelcomeModal user={this.state.user}/> }
             </div>
         )
     }

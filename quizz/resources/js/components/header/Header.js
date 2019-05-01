@@ -11,7 +11,7 @@ export default class Header extends Component {
             <div className="header">
                 <Route exact path={["/", "/sign-in", "/sign-up", "/about"]} component={IndexHeader} />
                 <Route path="/log" component={UserHeader} />
-                <Route exact path={[ '/user/dashboard' ] } component={UserHeader} />
+                <Route exact path={[ '/user/dashboard', '/user/dashboard/surveys', '/user/dashboard/quizzes' ] } component={UserHeader} />
             </div>
         )
     }

@@ -49,6 +49,7 @@ export default class SignInBody extends Component {
                         login: data.login,
                         email: data.email,
                         timestamp: new Date().toString(),
+                        isComeBack: true
                     };
 
                     const appData = {

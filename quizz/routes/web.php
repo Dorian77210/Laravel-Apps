@@ -12,6 +12,11 @@
 
 Route::group( [ 'middleware' => [ 'jwt-auth', 'api-header' ] ], function() {
     // route to be protected by the session connection
+
+    //logout
+    Route::post( '/user/logout/', 'Api\UserController@logout' );
+
+    // quizzes
     Route::get( '/user/quizzes/', 'Api\QuizzController@quizzes' );
 });
 

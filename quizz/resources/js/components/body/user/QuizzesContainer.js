@@ -67,7 +67,14 @@ class QuizzesContainer extends Component {
                 <div className="float-right">
                     <Button
                         variant="outline-primary"
-                        onClick={(event) => this.props.goTo(event, '/user/quizzes/create')}
+                        onClick={(event) => this.props.goTo(event, '/user/quizzes/create', {
+                            quizz: {
+                                title: '',
+                                resume: '',
+                                isPrivate: false,
+                                isActive: false
+                            }
+                        })}
                     >
                         Create quizz
                     </Button>

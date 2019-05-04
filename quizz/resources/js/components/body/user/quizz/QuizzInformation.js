@@ -31,7 +31,7 @@ class QuizzInformation extends Component {
             value = !quizz[ target.name ]
         }
 
-        var value = ( inputType === "checkbox" ) ? !quizz[ target.name ] : target.name;
+        var value = ( inputType === "checkbox" ) ? !quizz[ target.name ] : target.value;
 
         quizz[ target.name ] = value;
         this.setState({

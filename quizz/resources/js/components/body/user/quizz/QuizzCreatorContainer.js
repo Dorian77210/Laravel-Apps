@@ -13,7 +13,9 @@ export default class QuizzCreatorContainer extends Component {
             isCompleteInformation: false
         };
 
-        this.modal = React.createRef();
+        this.modalRef = React.createRef();
+
+        this.validateInformation = this.validateInformation.bind( this );
     }
 
     validateInformation( quizz ) {
@@ -22,13 +24,32 @@ export default class QuizzCreatorContainer extends Component {
                 isCompleteInformation: true
             });
 
+            console.log(quizz);
+
+            const modal = this.modalRef.current;
             // create the quizz in the database
             axios.post( '/user/quizzes/create', quizz )
                  .then( res => {
-                     console.log(res);
+                     const data = res.data;
+                     if( data.success ) {
+                         modal.setState({
+                             show: true,
+                             title: data.title,
+                             content: data.content
+                         });
+
+                         // save the id of the new quizz
+                         this.setState({
+                             quizzID: data.quizz_ID
+                         });
+                     }
                  })
                  .catch( error => {
-                     console.log(error);
+                     modal.setState({
+                         show: true,
+                         title: data.title,
+                         content: data.content
+                     });
                  });
         }
     }
@@ -44,7 +65,7 @@ export default class QuizzCreatorContainer extends Component {
                 <ErrorModal
                     content=""
                     title=""
-                    ref={this.modal}
+                    ref={this.modalRef}
                 />
                 <QuizzInformation validateInformation={this.validateInformation} />
 

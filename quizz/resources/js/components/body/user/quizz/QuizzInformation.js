@@ -9,10 +9,12 @@ class QuizzInformation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            resume: '',
-            isPrivate: false,
-            isActive: false,
+            quizz: {
+                title: '',
+                resume: '',
+                isPrivate: false,
+                isActive: false,
+            }
         };
 
         this.validateInformation = this.props.validateInformation;
@@ -21,8 +23,19 @@ class QuizzInformation extends Component {
 
     updateValues(event) {
         const target = event.target;
+
+        const inputType = target.type;
+        const quizz = this.state.quizz;
+
+        if(inputType == "checkbox") {
+            value = !quizz[ target.name ]
+        }
+
+        var value = ( inputType === "checkbox" ) ? !quizz[ target.name ] : target.name;
+
+        quizz[ target.name ] = value;
         this.setState({
-            [target.name]: target.value
+            quizz: quizz
         });
     }
 
@@ -48,18 +61,18 @@ class QuizzInformation extends Component {
 
                     <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Check type="checkbox" name="isPrivate" label="Is private ?" onKeyUp={(event) => this.updateValues(event)} />
+                            <Form.Check type="checkbox" name="isPrivate" label="Is private ?" onChange={(event) => this.updateValues(event)} />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Check type="checkbox" name="isActive" label="Is active" onKeyUp={(event) => this.updateValues(event)} />
+                            <Form.Check type="checkbox" name="isActive" label="Is active"  onChange={(event) => this.updateValues(event)} />
                         </Form.Group>
                     </Form.Row>
 
                     <div className="float-right">
                         <Button
                             variant="outline-primary"
-                            onClick={(event) => this.validateInformation()}
+                            onClick={(event) => this.validateInformation(this.state.quizz)}
                         >
                             Validate quizz
                     </Button>

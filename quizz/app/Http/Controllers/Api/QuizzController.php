@@ -18,8 +18,21 @@ class QuizzController extends Controller {
 
     }
 
-    public function create() {
+    public function store(Request $request) {
+        $user = $request->session()->get( 'user' );
+        $login = $user[ 'login' ];
 
+        // retrieve information about the quizz
+        $title = $request->title;
+        $resume = $request->resume;
+        $isPrivate = $request->isPrivate;
+        $isActive = $request->isActive;
+
+        $quizz = new Quizz;
+        $quizz->title = $title;
+        $quizz->resume = $resume;
+        $quizz->isPrivate = $isPrivate;
+        $quizz->isActive = $isActive;
     }
 
     public function quizzes(Request $request) {

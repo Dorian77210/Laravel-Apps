@@ -7,6 +7,7 @@ import SignUpBody from './SignUpBody';
 import UserHome from './user/UserHome';
 import ErrorBody from './ErrorBody';
 import QuizzCreatorContainer from './user/quizz/QuizzCreatorContainer';
+import QuizzUpdatorContainer from './user/quizz/QuizzUpdatorContainer';
 
 export class Body extends Component {
 
@@ -18,6 +19,7 @@ export class Body extends Component {
                 <Route exact path="/sign-up" component={SignUpBody} />
                 <Route exact path={[ '/user/dashboard', '/user/dashboard/surveys', '/user/dashboard/quizzes' ]} component={UserHome} />
                 <Route exact path={[ '/user/quizzes/create' ]} component={QuizzCreatorContainer} />
+                <Route exact path={ [ '/user/quizzes/update/:quizzID' ] } component={QuizzUpdatorContainer} />
                 <Route exact path="/error" component={ErrorBody} />
             </div>
         )

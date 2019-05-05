@@ -51,7 +51,8 @@ class QuizzesContainer extends Component {
                                     <th><FontAwesomeIcon icon={quizz.is_private ? "check" : "times"} color={quizz.is_private ? "green" : "red"} /></th>
                                     <th><FontAwesomeIcon icon={quizz.is_active ? "check" : "times"} color={quizz.is_active ? "green" : "red"} /></th>
                                     <th>{quizz.created_at}</th>
-                                    <th><span><FontAwesomeIcon icon="sync" className="text-center icon-hover" color="#52E819" /></span></th>
+                                    <th><span onClick={ event => this.props.goTo( event, '/user/quizzes/update/' + quizz.quizz_ID)}>
+                                        <FontAwesomeIcon icon="sync" className="text-center icon-hover" color="#52E819" /></span></th>
                                     <th>
                                         <span onClick={(event) => this.props.goTo(event, '/user/quizzes/' + quizz.quizz_ID)}>
                                             {quizz.is_active ? <FontAwesomeIcon icon="share" className="text-center icon-hover" />
@@ -67,15 +68,7 @@ class QuizzesContainer extends Component {
                 <div className="float-right">
                     <Button
                         variant="outline-primary"
-                        onClick={(event) => this.props.goTo(event, '/user/quizzes/create', {
-                            quizz: {
-                                title: '',
-                                resume: '',
-                                isPrivate: false,
-                                isActive: false
-                            }
-                        })}
-                    >
+                        onClick={(event) => this.props.goTo(event, '/user/quizzes/create')}>
                         Create quizz
                     </Button>
                 </div>

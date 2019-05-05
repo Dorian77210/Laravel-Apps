@@ -80,6 +80,26 @@ class QuizzController extends Controller {
         return response()->json( [ 'quizzes' => $data ] );
     }
 
+    public function quizzInformation( Request $request ) {
+        $user = $request->session()->get( 'user' );
+        $sessionLogin = $user[ 'login' ];
+
+        $requestLogin = $request->login;
+        $quizzID = $request->quizz_ID;
+        $json = null;
+
+        // prevent the violation of information
+        if( $sessionLogin != $requestLogin ) {
+            $json = [
+                'success'           =>          false,
+                'message'           =>          'You try to access to prohibited information',
+                'title'             =>          'Rights violation'
+            ];
+
+            return response()->json( $json, 203 );
+        }
+    }
+
     public function show($id) {
 
     }

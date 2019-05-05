@@ -26,9 +26,14 @@ class UserContainer extends Component {
         };
     }
 
-    goTo(event, link) {
+    goTo( event, link, extraData = null ) {
         event.preventDefault();
-        this.props.history.push( link );
+        this.props.history.push({
+            pathname: link,
+            state: {
+                extraData: extraData
+            }
+        });
     }
 
     componentWillMount() {

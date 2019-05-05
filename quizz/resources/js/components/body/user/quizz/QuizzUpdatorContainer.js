@@ -12,7 +12,7 @@ export default class QuizzUpdatorContainer extends Component {
 
         axios.get( '/user/' + login + '/quizzes/' + quizzID)
              .then( res => {
-
+                console.log( res );
              })
              .catch( error => {
 

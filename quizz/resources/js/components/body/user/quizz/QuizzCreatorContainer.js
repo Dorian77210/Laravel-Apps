@@ -24,8 +24,6 @@ export default class QuizzCreatorContainer extends Component {
                 isCompleteInformation: true
             });
 
-            console.log(quizz);
-
             const modal = this.modalRef.current;
             // create the quizz in the database
             axios.post( '/user/quizzes/create', quizz )

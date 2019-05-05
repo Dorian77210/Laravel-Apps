@@ -98,6 +98,50 @@ class QuizzController extends Controller {
 
             return response()->json( $json, 203 );
         }
+
+        $quizz = Quizz::where( 'quizz_ID', $quizzID )->first();
+        // retrieve questions of the current quizz
+
+        $quizzJSON = [
+            'quizzID'       =>          $quizzID,
+            'title'         =>          $quizz->title,
+            'resume'        =>          $quizz->resume,
+            'isPrivate'     =>          $quizz->is_private,
+            'isActive'      =>          $quizz->is_active
+        ];
+
+        $questionsJSON = [];
+        $answersJSON = null;
+
+        $questions = $quizz->questions;
+        foreach( $questions as $question ) {
+            $answersJSON = [];
+            $answers = $question->answers;
+
+            foreach( $answers as $answer ) {
+                $key = 'answer' . $answer->answer_ID;
+                $answersJSON[ $key ] = [
+                    'answerID'          =>          $answer->answer_ID,
+                    'content'           =>          $answer->content,
+                    'isRightAnswer'     =>          $answer->isRightAnswer
+                ];
+            }
+
+            $key = 'question' . $question->question_ID;
+            $questionsJSON[ $key ] = [
+                'questionID'            =>          $question->question_ID,
+                'content'               =>          $question->content
+            ];
+        }
+
+        $quizzJSON[ 'questions' ] = $questionsJSON;
+
+        $json = [
+            'quizz'             =>          $quizzJSON,
+            'success'            =>          true
+        ];
+
+        return response()->json( $json, 200 );
     }
 
     public function show($id) {

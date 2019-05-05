@@ -17,6 +17,14 @@ class Quizz extends Model {
     public function user() {
         return $this->belongsTo( 'App\User', 'login', 'user_login' );
     }
+
+    public function tickets() {
+        return $this->hasMany( 'App\Model\Ticket', 'quizz_ID' );
+    }
+
+    public function questions() {
+        return $this->hasMany( 'App\Model\Question', 'quizz_ID' );
+    }
 }
 
 ?>

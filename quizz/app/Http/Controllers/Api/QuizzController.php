@@ -157,12 +157,14 @@ class QuizzController extends Controller {
         $quizz->title = $request->title;
         $quizz->resume = $request->resume;
         $quizz->is_private = $request->isPrivate;
-        $quizz->is_active = $request->is_active;
+        $quizz->is_active = $request->isActive;
 
         $quizz->save();
 
         $json = [
-            'success'           =>          true
+            'success'           =>          true,
+            'title'             =>          'Quizz update',
+            'content'           =>          'Your quizz has been saved with success.'
         ];
 
         return response()->json( $json );

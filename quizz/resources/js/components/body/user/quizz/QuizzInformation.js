@@ -18,7 +18,7 @@ class QuizzInformation extends Component {
         };
 
         this.validateInformation = this.props.validateInformation;
-        this.updateValues = this.updateValues.bind(this);
+        this.updateValues = this.updateValues.bind( this );
     }
 
     updateValues(event) {

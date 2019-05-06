@@ -19,6 +19,7 @@ Route::group( [ 'middleware' => [ 'jwt-auth', 'api-header' ] ], function() {
     // quizzes
     Route::get( '/user/quizzes/', 'Api\QuizzController@quizzes' );
     Route::post( '/user/quizzes/create', 'Api\QuizzController@store' );
+    Route::patch( '/user/quizzes/{quizz_ID}', 'Api\QuizzController@update' );
 
     Route::get( '/user/{login}/quizzes/{quizz_ID}', 'Api\QuizzController@quizzInformation' );
 });

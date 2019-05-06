@@ -100,15 +100,6 @@ class QuizzController extends Controller {
         }
 
         $quizz = Quizz::where( 'quizz_ID', $quizzID )->first();
-        // retrieve questions of the current quizz
-
-        $quizzJSON = [
-            'quizzID'       =>          $quizzID,
-            'title'         =>          $quizz->title,
-            'resume'        =>          $quizz->resume,
-            'isPrivate'     =>          $quizz->is_private,
-            'isActive'      =>          $quizz->is_active
-        ];
 
         $questionsJSON = [];
         $answersJSON = null;
@@ -135,9 +126,16 @@ class QuizzController extends Controller {
         }
 
         $quizzJSON[ 'questions' ] = $questionsJSON;
+        $quizzJSON[ 'data' ] = [
+            'quizzID'       =>          $quizzID,
+            'title'         =>          $quizz->title,
+            'resume'        =>          $quizz->resume,
+            'isPrivate'     =>          $quizz->is_private,
+            'isActive'      =>          $quizz->is_active
+        ];
 
         $json = [
-            'quizz'             =>          $quizzJSON,
+            'quizz'              =>          $quizzJSON,
             'success'            =>          true
         ];
 
@@ -153,7 +151,21 @@ class QuizzController extends Controller {
     }
 
     public function update(Request $request, $id) {
+        $id = intval( $id );
+        $quizz = Quizz::where( 'quizz_ID', $id )->first();
 
+        $quizz->title = $request->title;
+        $quizz->resume = $request->resume;
+        $quizz->is_private = $request->isPrivate;
+        $quizz->is_active = $request->is_active;
+
+        $quizz->save();
+
+        $json = [
+            'success'           =>          true
+        ];
+
+        return response()->json( $json );
     }
 
     public function destroy($id) {

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import ErrorModal from '../../../modal/ErrorModal';
 
+import { Button } from 'react-bootstrap';
+
 import QuizzInformationUpdator from './QuizzInformationUpdator';
 
 import axios from 'axios';
@@ -64,6 +66,21 @@ export default class QuizzUpdatorContainer extends Component {
                     content=""
                     ref={this.modalRef}
                 />
+
+                <br/><br/><br/>
+                <div className="float-right">
+                    <Button
+                        variant="outline-primary"
+                    >
+                        Add question
+                    </Button>
+
+                    <Button
+                        variant="outline-primary"
+                    >
+                        Finish updates
+                    </Button>
+                </div>
             </div>
         )
     }

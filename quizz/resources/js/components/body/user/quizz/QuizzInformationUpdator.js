@@ -3,6 +3,7 @@ import { Form, Col, Row, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
+import ErrorModal from '../../../modal/ErrorModal';
 
 class QuizzInformationUpdator extends Component {
 
@@ -15,6 +16,8 @@ class QuizzInformationUpdator extends Component {
 
         this.updateValues = this.updateValues.bind( this );
         this.updateQuizz = this.updateQuizz.bind( this );
+
+        this.modalRef = React.createRef();
     }
 
     updateValues( event ) {
@@ -36,13 +39,24 @@ class QuizzInformationUpdator extends Component {
     }
 
     updateQuizz() {
-        console.log(this.state.quizz);
+        const modal = this.modalRef.current;
         axios.patch( '/user/quizzes/' + this.state.quizz.quizzID, this.state.quizz )
              .then( res => {
-                console.log(res);
+                 const data = res.data;
+                 if(data.success) {
+                    modal.setState( {
+                        title: data.title,
+                        content: data.content,
+                        show: true
+                    } );
+                 }
              })
              .catch( error => {
-                 console.log(error);
+                 modal.setState( {
+                     title: 'Error',
+                     content: 'Something was wrong on the server',
+                     show: true
+                 } );
              })
     }
 
@@ -103,6 +117,12 @@ class QuizzInformationUpdator extends Component {
                         </Button>
                     </div>
                 </Form>
+
+                <ErrorModal
+                    content=""
+                    title=""
+                    ref={this.modalRef}
+                />
             </div>
         );
     }

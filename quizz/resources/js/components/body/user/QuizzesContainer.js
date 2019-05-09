@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSync, faCheck, faTimes, faShare } from '@fortawesome/free-solid-svg-icons'
+import { faSync, faCheck, faTimes, faShare, faChartPie } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faSync, faCheck, faTimes, faShare);
+library.add(faSync, faCheck, faTimes, faShare, faChartPie);
 
 class QuizzesContainer extends Component {
 
@@ -34,6 +34,7 @@ class QuizzesContainer extends Component {
                                 <th>Created at</th>
                                 <th>Update</th>
                                 <th>Access to the quizz</th>
+                                <th>Statistics</th>
                             </tr>
 
                         </thead>
@@ -52,6 +53,11 @@ class QuizzesContainer extends Component {
                                             <span onClick={(event) => this.props.goTo(event, '/user/quizzes/' + quizz.quizz_ID)}>
                                                 {quizz.is_active ? <FontAwesomeIcon icon="share" className="text-center icon-hover" />
                                                     : <FontAwesomeIcon icon="times" color="red" />}
+                                            </span>
+                                        </th>
+                                        <th>
+                                            <span>
+                                                <FontAwesomeIcon icon="chart-pie" className="text-center icon-hover" />
                                             </span>
                                         </th>
                                     </tr>

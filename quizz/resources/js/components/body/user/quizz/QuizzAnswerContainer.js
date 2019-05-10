@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+
+import css from '../../../css/quizz.css';
+
 import PropTypes from 'prop-types';
 
 class QuizzAnswerContainer extends Component {
@@ -8,8 +11,8 @@ class QuizzAnswerContainer extends Component {
         super(props);
 
         this.state = {
-            answerKey: this.props.answerKey,
-            answer: this.props.answerContent
+            answerListID: this.props.answerListID,
+            answer: this.props.answer
         };
 
 
@@ -17,15 +20,17 @@ class QuizzAnswerContainer extends Component {
 
     render() {
         return (
-            <div>Answer container</div>
+            <div className="answer-container">
+                Answer container
+            </div>
         );
     }
 }
 
 
 QuizzAnswerContainer.propTypes = {
-    answerKey: PropTypes.string,
-    answerContent: PropTypes.array
+    answerListID: PropTypes.number,
+    answer: PropTypes.object,
 }
 
 export default QuizzAnswerContainer;

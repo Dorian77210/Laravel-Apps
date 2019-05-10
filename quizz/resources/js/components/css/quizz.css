@@ -1,0 +1,11 @@
+.question-container {
+    width: 90%;
+    margin: 0 auto;
+    float: none;
+}
+
+.answer-container {
+    width: 80%;
+    margin: 0 auto;
+    float: none;
+}

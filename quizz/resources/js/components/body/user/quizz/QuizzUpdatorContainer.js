@@ -5,6 +5,7 @@ import ErrorModal from '../../../modal/ErrorModal';
 import { Button } from 'react-bootstrap';
 
 import QuizzInformationUpdator from './QuizzInformationUpdator';
+import QuizzQuestionContainer from './QuizzQuestionContainer';
 
 import axios from 'axios';
 
@@ -19,6 +20,11 @@ export default class QuizzUpdatorContainer extends Component {
         this.state = {
             loading: true
         };
+
+        // functions of the component
+        this.addQuestion = this.addQuestion.bind( this );
+        this.removeQuestion = this.removeQuestion.bind( this );
+        this.updateQuestion = this.updateQuestion.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -39,7 +45,8 @@ export default class QuizzUpdatorContainer extends Component {
                      const quizz = data.quizz;
                      this.setState( {
                         quizz: quizz,
-                        loading: false
+                        loading: false,
+                        maxQuestionID: Object.keys(quizz.questions).length
                      } );
                  } else {
                      this.props.history.push( '/error' );
@@ -55,6 +62,30 @@ export default class QuizzUpdatorContainer extends Component {
              });
     }
 
+    updateQuestion( question ) {
+
+    }
+
+    addQuestion() {
+        const maxQuestionID = this.state.maxQuestionID;
+
+        this.state.quizz.questions.push( {
+            content: 'Question ?',
+            listID: maxQuestionID,
+            answers: []
+        } );
+
+        this.setState( {
+            maxQuestionID: maxQuestionID + 1
+        } );
+    }
+
+    removeQuestion( questionID ) {
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+        questions.filter( (question, index) => index != questionID );
+    }
+
     render() {
         return (
             <div>
@@ -68,9 +99,23 @@ export default class QuizzUpdatorContainer extends Component {
                 />
 
                 <br/><br/><br/>
+
+                <div>
+                    { !this.state.loading && this.state.quizz.questions.map( (question, id) => {
+                        return <QuizzQuestionContainer
+                                question={question}
+                                key={id}
+                                questionListID={id + 1}
+                                updateQuestion={this.updateQuestion}
+                        />
+                    })}
+                </div>
+
                 <div className="float-right">
+                    <br/><br/>
                     <Button
                         variant="outline-primary"
+                        onClick={ (event) => this.addQuestion()}
                     >
                         Add question
                     </Button>

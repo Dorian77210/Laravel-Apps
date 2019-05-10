@@ -113,7 +113,7 @@ class QuizzInformationUpdator extends Component {
                     <div className="float-right">
                         <Button variant="outline-primary"
                                 onClick={ (event) => this.updateQuizz()}
-                        > Update quizz
+                        > Update information
                         </Button>
                     </div>
                 </Form>

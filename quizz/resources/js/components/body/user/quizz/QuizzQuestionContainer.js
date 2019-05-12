@@ -6,6 +6,12 @@ import QuizzAnswerContainer from './QuizzAnswerContainer';
 
 import css from '../../../css/quizz.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faTrash);
+
 import PropTypes from 'prop-types';
 
 class QuizzQuestionContainer extends Component {
@@ -15,20 +21,10 @@ class QuizzQuestionContainer extends Component {
 
         this.state = {
             question: this.props.question,
-            questionListID: this.props.questionListID
+            questionListID: this.props.questionListID,
+            addAnswer: this.props.addAnswer,
+            deleteQuestion: this.props.deleteQuestion
         };
-
-        this.addAnswer = this.addAnswer.bind( this );
-    }
-
-    addAnswer() {
-        const answerListID = Object.keys(this.state.question.answers).length;
-
-        this.state.question.answers.push( {
-            content: 'Answer',
-            answerListID: answerListID + 1,
-            isCorrectAnswer: false // default value
-        } );
     }
 
     render() {
@@ -39,34 +35,42 @@ class QuizzQuestionContainer extends Component {
                         <Form.Label column sm={2}>
                             Question {this.state.questionListID}
                         </Form.Label>
-                        <Col sm={10}>
+                        <Col sm={8}>
                             <Form.Control
                                 type="text"
                                 placeholder="Question"
                                 defaultValue={this.state.question.content}
                             />
                         </Col>
+                        <Col sm={2}>
+                            <span onClick={ event => this.state.deleteQuestion( this.state.questionListID - 1)}>
+                                <FontAwesomeIcon icon="trash"
+                                    className="icon-hover text-center"
+                                />
+                            </span>
+                        </Col>
+
                     </Form.Group>
                 </Form>
 
                 <div>
                     {/* container for each answer */}
-                    { this.state.question.answers.map( (answer, id) => {
+                    {this.state.question.answers.map((answer, id) => {
                         return <QuizzAnswerContainer
-                                    answer={answer}
-                                    key={id}
-                                    answerListID={id + 1}
-                                />
+                            answer={answer}
+                            key={'question' + this.state.questionListID + '-answer' + id}
+                            answerListID={id + 1}
+                        />
                     })}
                 </div>
                 <Button
                     variant="outline-primary"
                     className="float-right"
-                    onClick={ event => this.addAnswer() }
+                    onClick={event => this.state.addAnswer(this.state.questionListID - 1)}
                 >
                     Add answer
                 </Button>
-                <br/><br/>
+                <br /><br />
             </div>
         );
     }
@@ -75,6 +79,8 @@ class QuizzQuestionContainer extends Component {
 QuizzQuestionContainer.propTypes = {
     question: PropTypes.object,
     questionListID: PropTypes.number,
+    addAnswer: PropTypes.func,
+    deleteQuestion: PropTypes.func
 };
 
 export default QuizzQuestionContainer;

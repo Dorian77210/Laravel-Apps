@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { From, Button, Row, Col } from 'react-bootstrap';
 
 import css from '../../../css/quizz.css';
 

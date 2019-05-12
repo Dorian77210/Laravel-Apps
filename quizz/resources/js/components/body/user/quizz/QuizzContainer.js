@@ -21,6 +21,8 @@ class QuizzContainer extends Component {
         };
 
         this.addQuestion = this.addQuestion.bind(this);
+        this.addAnswer = this.addAnswer.bind( this );
+        this.deleteQuestion = this.deleteQuestion.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -73,18 +75,50 @@ class QuizzContainer extends Component {
 
     // util functions
     addQuestion() {
-        const questionListID = Object.keys( this.state.quizz.questions ).length + 1;
-
         const quizz = this.state.quizz;
         const questions = quizz.questions;
         questions.push( {
             content: 'Question ?',
+            isDirty: false,
+            isNew: true,
             answers: []
         } );
 
         quizz.questions = questions;
 
+        // update the new state
         this.setState( {
+            quizz: quizz
+        } );
+    }
+
+    deleteQuestion( questionID ) {
+        const quizz = this.state.quizz;
+        var questions = quizz.questions;
+        questions = questions.filter( ( question, id ) => id != questionID );
+        quizz.questions = questions;
+
+        // update the new state
+        this.setState( {
+            quizz: quizz
+        } );
+    }
+
+    addAnswer( questionID ) {
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+
+        questions[ questionID ].answers.push( {
+            content: '',
+            isCorrectAnswer: false, // default value
+            isNew: true,
+            isDirty: false,
+        } );
+
+        quizz.questions = questions;
+
+        // update the new state
+        this.setState( {
             quizz: quizz
         } );
     }
@@ -104,8 +138,10 @@ class QuizzContainer extends Component {
                     {!this.state.loading && this.state.quizz.questions.map((question, id) => {
                         return <QuizzQuestionContainer
                             question={question}
-                            key={id}
+                            key={'question' + id}
                             questionListID={id + 1}
+                            addAnswer={this.addAnswer}
+                            deleteQuestion={this.deleteQuestion}
                         />
                     })}
 

@@ -26,6 +26,7 @@ class QuizzContainer extends Component {
         this.deleteAnswer = this.deleteAnswer.bind( this );
         this.updateAnswer = this.updateAnswer.bind( this );
         this.updateQuestion = this.updateQuestion.bind( this );
+        this.updateQuizz = this.updateQuizz.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -36,10 +37,11 @@ class QuizzContainer extends Component {
             this.setState({
                 quizz: {
                     data: {
-                        content: '',
                         isPrivate: false,
                         isActive: false,
                         title: '',
+                        isNew: true,
+                        isDirty: false
                     },
                     questions: []
                 },
@@ -74,6 +76,28 @@ class QuizzContainer extends Component {
                     });
                 });
         }
+    }
+
+    updateQuizz( event ) {
+        const quizz = this.state.quizz;
+        const data = quizz.data;
+
+        if( !data.isDirty ) {
+            data.isDirty = true;
+        }
+
+        const target = event.target;
+        const inputType = target.type;
+        const value = (inputType === "checkbox") ? !data[target.name] : target.value;
+
+        data[ target.name ] = value;
+        quizz.data = data;
+
+        console.log( data );
+
+        this.setState( {
+            quizz: quizz
+        } );
     }
 
     // util functions
@@ -113,7 +137,7 @@ class QuizzContainer extends Component {
 
         questions[ questionID ].answers.push( {
             content: '',
-            isCorrectAnswer: false, // default value
+            isRightAnswer: false, // default value
             isNew: true,
             isDirty: false,
         } );
@@ -185,7 +209,10 @@ class QuizzContainer extends Component {
         return (
             <div>
                 {
-                    !this.state.loading && <QuizzInformation quizz={this.state.quizz.data} />
+                    !this.state.loading && <QuizzInformation
+                                            quizz={this.state.quizz.data}
+                                            updateQuizz={this.updateQuizz}
+                    />
                 }
 
                 {/* Question part */}

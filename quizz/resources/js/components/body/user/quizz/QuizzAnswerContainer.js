@@ -48,8 +48,8 @@ class QuizzAnswerContainer extends Component {
 
                         <Col sm={2}>
                             <Form.Check type="checkbox"
-                                        name="isCorrectAnswer"
-                                        label="Is correct answer ?"
+                                        name="isRightAnswer"
+                                        label="Is right answer ?"
                                         onChange={ event => this.state.updateAnswer( this.state.questionID, this.state.answerListID - 1, event )}
                             />
                         </Col>

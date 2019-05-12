@@ -9,30 +9,10 @@ class QuizzInformation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            quizz: this.props.quizz
+            quizz: this.props.quizz,
+            updateQuizz: this.props.updateQuizz
         };
-
-        this.updateValues = this.updateValues.bind( this );
     }
-
-    updateValues(event) {
-        const target = event.target;
-
-        const inputType = target.type;
-        const quizz = this.state.quizz;
-
-        if (inputType == "checkbox") {
-            value = !quizz[target.name]
-        }
-
-        var value = (inputType === "checkbox") ? !quizz[target.name] : target.value;
-
-        quizz[target.name] = value;
-        this.setState({
-            quizz: quizz
-        });
-    }
-
 
     render() {
         return (
@@ -48,7 +28,7 @@ class QuizzInformation extends Component {
                                           placeholder="Title"
                                           name="title"
                                           defaultValue={this.state.quizz.title}
-                                          onKeyUp={(event) => this.updateValues(event)}
+                                          onKeyUp={(event) => this.state.updateQuizz( event )}
                             />
                         </Col>
                     </Form.Group>
@@ -59,7 +39,7 @@ class QuizzInformation extends Component {
                                       rows="3" name="resume"
                                       style={{ resize: 'none' }}
                                       defaultValue={this.state.quizz.resume}
-                                      onKeyUp={(event) => this.updateValues(event)}
+                                      onKeyUp={(event) => this.state.updateQuizz( event )}
                         />
                     </Form.Group>
 
@@ -69,7 +49,7 @@ class QuizzInformation extends Component {
                                         name="isPrivate"
                                         label="Is private ?"
                                         defaultChecked={this.state.quizz.isPrivate}
-                                        onChange={(event) => this.updateValues(event)}
+                                        onChange={(event) => this.state.updateQuizz( event )}
                             />
                         </Form.Group>
 
@@ -78,7 +58,7 @@ class QuizzInformation extends Component {
                                         name="isActive"
                                         label="Is active"
                                         defaultChecked={this.state.quizz.isActive}
-                                        onChange={(event) => this.updateValues(event)}
+                                        onChange={(event) => this.state.updateQuizz( event )}
                             />
                         </Form.Group>
                     </Form.Row>
@@ -89,7 +69,8 @@ class QuizzInformation extends Component {
 }
 
 QuizzInformation.propTypes = {
-    quizz: PropTypes.object
+    quizz: PropTypes.object,
+    updateQuizz: PropTypes.func
 }
 
 export default QuizzInformation;

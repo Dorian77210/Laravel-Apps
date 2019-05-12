@@ -114,14 +114,18 @@ class QuizzController extends Controller {
                 $answersJSON[ $key ] = [
                     'answerID'          =>          $answer->answer_ID,
                     'content'           =>          $answer->content,
-                    'isRightAnswer'     =>          $answer->isRightAnswer
+                    'isRightAnswer'     =>          $answer->isRightAnswer,
+                    'isDirty'           =>          false,
+                    'isNew'             =>          false
                 ];
             }
 
             $key = 'question' . $question->question_ID;
             $questionsJSON[ $key ] = [
                 'questionID'            =>          $question->question_ID,
-                'content'               =>          $question->content
+                'content'               =>          $question->content,
+                'isNew'                 =>          false,
+                'isDirty'               =>          false
             ];
         }
 
@@ -131,7 +135,9 @@ class QuizzController extends Controller {
             'title'         =>          $quizz->title,
             'resume'        =>          $quizz->resume,
             'isPrivate'     =>          $quizz->is_private,
-            'isActive'      =>          $quizz->is_active
+            'isActive'      =>          $quizz->is_active,
+            'isDirty'       =>          false,
+            'isNew'         =>          false
         ];
 
         $json = [

@@ -24,6 +24,8 @@ class QuizzContainer extends Component {
         this.addAnswer = this.addAnswer.bind( this );
         this.deleteQuestion = this.deleteQuestion.bind( this );
         this.deleteAnswer = this.deleteAnswer.bind( this );
+        this.updateAnswer = this.updateAnswer.bind( this );
+        this.updateQuestion = this.updateQuestion.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -139,6 +141,46 @@ class QuizzContainer extends Component {
         } );
     }
 
+    updateQuestion( questionID, content ) {
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+        const question = questions[ questionID ];
+
+        if( !question.isDirty ) question.isDirty = true;
+        question.content = content;
+
+        questions[ questionID ] = question;
+        quizz.questions = questions;
+
+        this.setState( {
+            quizz: quizz
+        } );
+    }
+
+    updateAnswer( questionID, answerID, event ) {
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+        const question = questions[ questionID ];
+        const answer = question.answers[ answerID ];
+
+        const target = event.target;
+        const inputType = target.type;
+        const value = (inputType === "checkbox") ? !answer[target.name] : target.value;
+
+
+        if( !answer.isDirty ) answer.isDirty = true;
+
+        answer[ target.name ] = value;
+
+        question.answers[ answerID ] = answer;
+        questions[ questionID ] = question;
+        quizz.questions = questions;
+
+        this.setState( {
+            quizz: quizz,
+        } );
+    }
+
     render() {
         return (
             <div>
@@ -159,6 +201,8 @@ class QuizzContainer extends Component {
                             addAnswer={this.addAnswer}
                             deleteQuestion={this.deleteQuestion}
                             deleteAnswer={this.deleteAnswer}
+                            updateQuestion={this.updateQuestion}
+                            updateAnswer={this.updateAnswer}
                         />
                     })}
 

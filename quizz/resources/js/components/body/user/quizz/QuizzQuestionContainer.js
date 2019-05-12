@@ -24,7 +24,9 @@ class QuizzQuestionContainer extends Component {
             questionListID: this.props.questionListID,
             addAnswer: this.props.addAnswer,
             deleteQuestion: this.props.deleteQuestion,
-            deleteAnswer: this.props.deleteAnswer
+            deleteAnswer: this.props.deleteAnswer,
+            updateQuestion: this.props.updateQuestion,
+            updateAnswer: this.props.updateAnswer,
         };
     }
 
@@ -41,10 +43,12 @@ class QuizzQuestionContainer extends Component {
                                 type="text"
                                 placeholder="Question"
                                 defaultValue={this.state.question.content}
+                                onKeyUp={ event => this.state.updateQuestion( this.state.questionListID - 1, event.target.value )}
+                                name="content"
                             />
                         </Col>
                         <Col sm={2}>
-                            <span onClick={ event => this.state.deleteQuestion( this.state.questionListID - 1)}>
+                            <span onClick={ event => this.state.deleteQuestion( this.state.questionListID - 1 ) }>
                                 <FontAwesomeIcon icon="trash"
                                     className="icon-hover text-center"
                                 />
@@ -63,13 +67,14 @@ class QuizzQuestionContainer extends Component {
                             answerListID={id + 1}
                             deleteAnswer={this.state.deleteAnswer}
                             questionID={this.state.questionListID - 1}
+                            updateAnswer={this.state.updateAnswer}
                         />
                     })}
                 </div>
                 <Button
                     variant="outline-primary"
                     className="float-right"
-                    onClick={event => this.state.addAnswer(this.state.questionListID - 1)}
+                    onClick={event => this.state.addAnswer( this.state.questionListID - 1 ) }
                 >
                     Add answer
                 </Button>
@@ -84,7 +89,9 @@ QuizzQuestionContainer.propTypes = {
     questionListID: PropTypes.number,
     addAnswer: PropTypes.func,
     deleteQuestion: PropTypes.func,
-    deleteAnswer: PropTypes.func
+    deleteAnswer: PropTypes.func,
+    updateQuestion: PropTypes.func,
+    updateAnswer: PropTypes.func
 };
 
 export default QuizzQuestionContainer;

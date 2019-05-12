@@ -21,7 +21,8 @@ class QuizzAnswerContainer extends Component {
             answerListID: this.props.answerListID,
             answer: this.props.answer,
             questionID: this.props.questionID,
-            deleteAnswer: this.props.deleteAnswer
+            deleteAnswer: this.props.deleteAnswer,
+            updateAnswer: this.props.updateAnswer,
         };
 
 
@@ -40,6 +41,8 @@ class QuizzAnswerContainer extends Component {
                                 type="text"
                                 placeholder="Answer"
                                 defaultValue={this.state.answer.content}
+                                onKeyUp={ event => this.state.updateAnswer( this.state.questionID, this.state.answerListID - 1, event )}
+                                name="content"
                             />
                         </Col>
 
@@ -47,6 +50,7 @@ class QuizzAnswerContainer extends Component {
                             <Form.Check type="checkbox"
                                         name="isCorrectAnswer"
                                         label="Is correct answer ?"
+                                        onChange={ event => this.state.updateAnswer( this.state.questionID, this.state.answerListID - 1, event )}
                             />
                         </Col>
 
@@ -57,7 +61,6 @@ class QuizzAnswerContainer extends Component {
                                 />
                             </span>
                         </Col>
-
                     </Form.Group>
                 </Form>
             </div>
@@ -70,7 +73,8 @@ QuizzAnswerContainer.propTypes = {
     answerListID: PropTypes.number,
     answer: PropTypes.object,
     deleteAnswer: PropTypes.func,
-    questionID: PropTypes.number
+    questionID: PropTypes.number,
+    updateAnswer: PropTypes.func,
 }
 
 export default QuizzAnswerContainer;

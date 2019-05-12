@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import QuizzInformation from './QuizzInformation';
+import QuizzQuestionContainer from './QuizzQuestionContainer';
 
 import { Button } from 'react-bootstrap';
 
@@ -18,6 +19,8 @@ class QuizzContainer extends Component {
             isNew: isNew,
             loading: true,
         };
+
+        this.addQuestion = this.addQuestion.bind(this);
 
         this.modalRef = React.createRef();
     }
@@ -68,6 +71,24 @@ class QuizzContainer extends Component {
         }
     }
 
+    // util functions
+    addQuestion() {
+        const questionListID = Object.keys( this.state.quizz.questions ).length + 1;
+
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+        questions.push( {
+            content: 'Question ?',
+            answers: []
+        } );
+
+        quizz.questions = questions;
+
+        this.setState( {
+            quizz: quizz
+        } );
+    }
+
     render() {
         return (
             <div>
@@ -75,21 +96,49 @@ class QuizzContainer extends Component {
                     !this.state.loading && <QuizzInformation quizz={this.state.quizz.data} />
                 }
 
-                <div className="float-right">
-                        {this.state.isNew
-                            ? <Button
-                                variant="outline-primary"
-                            >
-                                Create quizz
-                            </Button>
-                            : <Button
-                                variant="outline-primary"
-                            >
-                                Update quizz
-                            </Button>
-                        }
+                {/* Question part */}
+
+                <br />
+
+                <div>
+                    {!this.state.loading && this.state.quizz.questions.map((question, id) => {
+                        return <QuizzQuestionContainer
+                            question={question}
+                            key={id}
+                            questionListID={id + 1}
+                        />
+                    })}
+
+                    <br/><br/>
+
+                    <div className="float-right">
+                        <Button
+                            variant="outline-primary"
+                            onClick={event => this.addQuestion()}
+                        >
+                            Add question
+                    </Button>
 
                     </div>
+
+                    <br/><br/>
+                </div>
+
+                <div className="float-right">
+                    {this.state.isNew
+                        ? <Button
+                            variant="outline-primary"
+                        >
+                            Create quizz
+                            </Button>
+                        : <Button
+                            variant="outline-primary"
+                        >
+                            Update quizz
+                            </Button>
+                    }
+
+                </div>
 
                 <ErrorModal
                     title=""

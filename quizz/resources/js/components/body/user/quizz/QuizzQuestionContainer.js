@@ -75,7 +75,6 @@ class QuizzQuestionContainer extends Component {
 QuizzQuestionContainer.propTypes = {
     question: PropTypes.object,
     questionListID: PropTypes.number,
-    updateQuestion: PropTypes.func
 };
 
 export default QuizzQuestionContainer;

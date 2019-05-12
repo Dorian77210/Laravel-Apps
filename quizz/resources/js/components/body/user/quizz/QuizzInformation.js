@@ -68,7 +68,7 @@ class QuizzInformation extends Component {
                             <Form.Check type="checkbox"
                                         name="isPrivate"
                                         label="Is private ?"
-                                        defaultValue={this.state.quizz.isPrivate}
+                                        defaultChecked={this.state.quizz.isPrivate}
                                         onChange={(event) => this.updateValues(event)}
                             />
                         </Form.Group>
@@ -77,7 +77,7 @@ class QuizzInformation extends Component {
                             <Form.Check type="checkbox"
                                         name="isActive"
                                         label="Is active"
-                                        defaultValue={this.state.quizz.isActive}
+                                        defaultChecked={this.state.quizz.isActive}
                                         onChange={(event) => this.updateValues(event)}
                             />
                         </Form.Group>

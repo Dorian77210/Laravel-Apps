@@ -23,6 +23,7 @@ class QuizzContainer extends Component {
         this.addQuestion = this.addQuestion.bind(this);
         this.addAnswer = this.addAnswer.bind( this );
         this.deleteQuestion = this.deleteQuestion.bind( this );
+        this.deleteAnswer = this.deleteAnswer.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -123,6 +124,21 @@ class QuizzContainer extends Component {
         } );
     }
 
+    deleteAnswer( questionID, answerID ) {
+        const quizz = this.state.quizz;
+        const questions = quizz.questions;
+        const question = questions[ questionID ];
+        var answers = question.answers;
+
+        question.answers = answers.filter( ( answer, id ) => answerID != id );
+        questions[ questionID ] = question;
+        quizz.questions = questions;
+
+        this.setState( {
+            quizz: quizz
+        } );
+    }
+
     render() {
         return (
             <div>
@@ -142,6 +158,7 @@ class QuizzContainer extends Component {
                             questionListID={id + 1}
                             addAnswer={this.addAnswer}
                             deleteQuestion={this.deleteQuestion}
+                            deleteAnswer={this.deleteAnswer}
                         />
                     })}
 

@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faTrash);
+library.add( faTrash );
 
 import PropTypes from 'prop-types';
 
@@ -23,7 +23,8 @@ class QuizzQuestionContainer extends Component {
             question: this.props.question,
             questionListID: this.props.questionListID,
             addAnswer: this.props.addAnswer,
-            deleteQuestion: this.props.deleteQuestion
+            deleteQuestion: this.props.deleteQuestion,
+            deleteAnswer: this.props.deleteAnswer
         };
     }
 
@@ -60,6 +61,8 @@ class QuizzQuestionContainer extends Component {
                             answer={answer}
                             key={'question' + this.state.questionListID + '-answer' + id}
                             answerListID={id + 1}
+                            deleteAnswer={this.state.deleteAnswer}
+                            questionID={this.state.questionListID - 1}
                         />
                     })}
                 </div>
@@ -80,7 +83,8 @@ QuizzQuestionContainer.propTypes = {
     question: PropTypes.object,
     questionListID: PropTypes.number,
     addAnswer: PropTypes.func,
-    deleteQuestion: PropTypes.func
+    deleteQuestion: PropTypes.func,
+    deleteAnswer: PropTypes.func
 };
 
 export default QuizzQuestionContainer;

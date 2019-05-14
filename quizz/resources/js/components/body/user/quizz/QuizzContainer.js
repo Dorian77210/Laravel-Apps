@@ -18,6 +18,10 @@ class QuizzContainer extends Component {
         this.state = {
             isNew: isNew,
             loading: true,
+            cache: {
+                questions: [],
+                answers: []
+            }
         };
 
         this.addQuestion = this.addQuestion.bind(this);
@@ -27,6 +31,7 @@ class QuizzContainer extends Component {
         this.updateAnswer = this.updateAnswer.bind( this );
         this.updateQuestion = this.updateQuestion.bind( this );
         this.updateQuizz = this.updateQuizz.bind( this );
+        this.createQuizz = this.createQuizz.bind( this );
 
         this.modalRef = React.createRef();
     }
@@ -93,14 +98,14 @@ class QuizzContainer extends Component {
         data[ target.name ] = value;
         quizz.data = data;
 
-        console.log( data );
-
         this.setState( {
             quizz: quizz
         } );
     }
 
     // util functions
+
+    /* QUESTION FUNCTIONS */
     addQuestion() {
         const quizz = this.state.quizz;
         const questions = quizz.questions;
@@ -122,14 +127,25 @@ class QuizzContainer extends Component {
     deleteQuestion( questionID ) {
         const quizz = this.state.quizz;
         var questions = quizz.questions;
+        const question = questions[ questionID ];
         questions = questions.filter( ( question, id ) => id != questionID );
         quizz.questions = questions;
 
+        // if question isn't new, put it in the cache
+        if( !question.isNew ) {
+            const cache = this.state.cache;
+            cache.questions.push( questions[ questionID ] );
+            this.setState( {
+                cache: cache
+            } );
+        }
         // update the new state
         this.setState( {
             quizz: quizz
         } );
     }
+
+    /* ANSWER FUNCTIONS */
 
     addAnswer( questionID ) {
         const quizz = this.state.quizz;
@@ -155,16 +171,27 @@ class QuizzContainer extends Component {
         const questions = quizz.questions;
         const question = questions[ questionID ];
         var answers = question.answers;
+        const answer = answers[ answerID ];
 
         question.answers = answers.filter( ( answer, id ) => answerID != id );
         questions[ questionID ] = question;
         quizz.questions = questions;
+
+        // if the answer isn't new, put it in the cache
+        if( !answer.isNew ) {
+            const cache = this.state.cache;
+            cache.answers.push( answer );
+            this.setState( {
+                cache: cache
+            } );
+        }
 
         this.setState( {
             quizz: quizz
         } );
     }
 
+    /* UPDATE FUNCTIONS */
     updateQuestion( questionID, content ) {
         const quizz = this.state.quizz;
         const questions = quizz.questions;
@@ -203,6 +230,19 @@ class QuizzContainer extends Component {
         this.setState( {
             quizz: quizz,
         } );
+    }
+
+    createQuizz() {
+        // function to save the quizz in the API
+        const modal = this.modalRef.current;
+
+        axios.post( '/user/quizzes/create', this.state.quizz )
+             .then( res => {
+
+             } )
+             .catch( error => {
+
+             } );
     }
 
     render() {
@@ -252,6 +292,7 @@ class QuizzContainer extends Component {
                     {this.state.isNew
                         ? <Button
                             variant="outline-primary"
+                            onClick={ event => this.createQuizz() }
                         >
                             Create quizz
                             </Button>

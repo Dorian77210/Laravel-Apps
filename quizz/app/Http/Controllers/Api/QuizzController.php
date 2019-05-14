@@ -23,10 +23,13 @@ class QuizzController extends Controller {
         $login = $user[ 'login' ];
 
         // retrieve information about the quizz
-        $title = $request->title;
-        $resume = $request->resume || " ";
-        $isPrivate = $request->isPrivate || " ";
-        $isActive = $request->isActive;
+        $dataQuizz = $request->data;
+        $questions = $request->questions;
+
+        $title = $dataQuizz->title;
+        $resume = $dataQuizz->resume || " ";
+        $isPrivate = $dataQuizz->isPrivate || " ";
+        $isActive = $dataQuizz->isActive;
 
         $quizz = new Quizz;
         $quizz->title = $title;
@@ -36,15 +39,9 @@ class QuizzController extends Controller {
         $quizz->user_login = $login;
 
         $quizz->save();
+        $quizz = $quizz->fresh();
 
-        try {
-            $quizz = $quizz->fresh();
-        } catch(\Illuminate\Database\QueryException $exception) {
-            $errorInfo = $exception->errorInfo;
-            $a = 0;
-        }
         // refresh model
-
         $json = [
             'success'       =>          true,
             'quizz_ID'      =>          $quizz->quizz_ID,

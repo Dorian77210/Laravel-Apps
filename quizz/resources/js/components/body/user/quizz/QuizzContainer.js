@@ -61,6 +61,7 @@ class QuizzContainer extends Component {
 
             axios.get('/user/' + login + '/quizzes/' + quizzID)
                 .then(res => {
+                    console.log(res);
                     const data = res.data;
                     if (data.success) {
                         const quizz = data.quizz;
@@ -242,10 +243,13 @@ class QuizzContainer extends Component {
                 if( !data.success ) {
 
                 } else {
+                    const data = res.data;
+                    this.setState( {
+                        quizz: quizz,
+                    } );
 
+                    console.log( this.state.quizz );
                 }
-
-                console.log(data);
 
                 modal.setState( {
                     show:       true,

@@ -17,6 +17,16 @@ class Answer extends Model {
     public function question() {
         return $this->belongsTo( 'App\Model\Question', 'question_ID' );
     }
+
+    public function toJSONFormat() {
+        return [
+            'answerID'          =>          $this->answer_ID,
+            'content'           =>          $this->content,
+            'isRightAnswer'     =>          $this->isRightAnswer,
+            'isDirty'           =>          false,
+            'isNew'             =>          false
+        ];
+    }
 }
 
 ?>

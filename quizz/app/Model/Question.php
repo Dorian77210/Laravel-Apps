@@ -21,6 +21,25 @@ class Question extends Model {
     public function answers() {
         return $this->hasMany( 'App\Model\Answer', 'question_ID' );
     }
+
+    public function toJSONFormat() {
+        $json = [
+            'questionID'            =>          $this->question_ID,
+            'content'               =>          $this->content,
+            'isNew'                 =>          false,
+            'isDirty'               =>          false,
+        ];
+
+        $answersJSON = [];
+
+        foreach( $this->answers as $answer ) {
+            array_push( $answersJSON, $answer->toJSONFormat() );
+        }
+
+        $json[ 'answers' ] = $answersJSON;
+
+        return $json;
+    }
 }
 
 ?>

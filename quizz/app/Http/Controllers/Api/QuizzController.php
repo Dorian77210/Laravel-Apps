@@ -96,10 +96,11 @@ class QuizzController extends Controller {
         $json = [
             'success'               =>          true,
             'title'                 =>          'Creation of quizz',
-            'content'               =>          'Quizz created with success.'
+            'content'               =>          'Quizz created with success.',
+            'quizz'                 =>          $quizz->toJSONFormat(),
         ];
-        return response()->json( $json );
 
+        return response()->json( $json );
     }
 
     // verify if a question has one AND only one right answer
@@ -161,47 +162,10 @@ class QuizzController extends Controller {
 
         $quizz = Quizz::where( 'quizz_ID', $quizzID )->first();
 
-        $questionsJSON = [];
-        $answersJSON = null;
-
-        $questions = $quizz->questions;
-        foreach( $questions as $question ) {
-            $answersJSON = [];
-            $answers = $question->answers;
-
-            foreach( $answers as $answer ) {
-                array_push( $answersJSON, [
-                    'answerID'          =>          $answer->answer_ID,
-                    'content'           =>          $answer->content,
-                    'isRightAnswer'     =>          $answer->isRightAnswer,
-                    'isDirty'           =>          false,
-                    'isNew'             =>          false
-                ] );
-            }
-
-            array_push( $questionsJSON, [
-                'questionID'            =>          $question->question_ID,
-                'content'               =>          $question->content,
-                'isNew'                 =>          false,
-                'isDirty'               =>          false,
-                'answers'               =>          $answersJSON,
-            ] );
-        }
-
-        $quizzJSON[ 'questions' ] = $questionsJSON;
-        $quizzJSON[ 'data' ] = [
-            'quizzID'       =>          $quizzID,
-            'title'         =>          $quizz->title,
-            'resume'        =>          $quizz->resume,
-            'isPrivate'     =>          $quizz->is_private,
-            'isActive'      =>          $quizz->is_active,
-            'isDirty'       =>          false,
-            'isNew'         =>          false
-        ];
-
+        $quizzJSON = $quizz->toJSONFormat();
         $json = [
-            'quizz'              =>          $quizzJSON,
-            'success'            =>          true
+            'quizz'             =>          $quizzJSON,
+            'success'           =>          true
         ];
 
         return response()->json( $json, 200 );

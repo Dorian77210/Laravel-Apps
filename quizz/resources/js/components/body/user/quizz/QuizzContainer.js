@@ -243,12 +243,9 @@ class QuizzContainer extends Component {
                 if( !data.success ) {
 
                 } else {
-                    const data = res.data;
                     this.setState( {
-                        quizz: quizz,
+                        quizz: data.quizz,
                     } );
-
-                    console.log( this.state.quizz );
                 }
 
                 modal.setState( {
@@ -259,7 +256,11 @@ class QuizzContainer extends Component {
 
              } )
              .catch( error => {
-
+                modal.setState( {
+                    show: true,
+                    title: 'Server error',
+                    content: 'Something was wrong on the server. Please try later.'
+                } )
              } );
     }
 

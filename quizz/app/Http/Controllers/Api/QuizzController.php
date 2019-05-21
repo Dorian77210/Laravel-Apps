@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\User as User;
 use App\Model\Quizz;
+use App\Model\Question;
+use App\Model\Answer;
 use Illuminate\Database\QueryException;
 
 use JWTAuth;
 use JWTAuthException;
+use DB;
 
 class QuizzController extends Controller {
 
@@ -26,31 +29,91 @@ class QuizzController extends Controller {
         $dataQuizz = $request->data;
         $questions = $request->questions;
 
-        $title = $dataQuizz->title;
-        $resume = $dataQuizz->resume || " ";
-        $isPrivate = $dataQuizz->isPrivate || " ";
-        $isActive = $dataQuizz->isActive;
+        $title = $dataQuizz[ 'title' ];
+        $resume = $dataQuizz[ 'resume' ];
+        $isPrivate = $dataQuizz[ 'isPrivate' ];
+        $isActive = $dataQuizz[ 'isActive' ];
 
-        $quizz = new Quizz;
-        $quizz->title = $title;
-        $quizz->resume = $resume;
-        $quizz->is_private = $isPrivate;
-        $quizz->is_active = $isActive;
-        $quizz->user_login = $login;
+        DB::beginTransaction();
+        try {
+            $quizz = new Quizz;
+            $quizz->title = $title;
+            $quizz->resume = $resume;
+            $quizz->is_private = $isPrivate;
+            $quizz->is_active = $isActive;
+            $quizz->user_login = $login;
 
-        $quizz->save();
-        $quizz = $quizz->fresh();
+            $quizz->save();
+            $quizz->fresh();
+            $quizzID = $quizz->quizz_ID;
 
-        // refresh model
+            $numQuestion = 1;
+
+            foreach( $questions as $question ) {
+                $answers = $question[ 'answers' ];
+                if( !$this->hasOneRightAnswer( $question ) ) {
+                    $json = [
+                        'success'       =>          false,
+                        'title'         =>          'Problem with right answer',
+                        'content'       =>          'The question number ' . $numQuestion . ' has a problem with right answers. Please check you have only one right answer'
+                    ];
+
+                    return response()->json( $json );
+                }
+
+                $questionDB = new Question;
+                $questionDB->content = $question[ 'content' ];
+                $questionDB->quizz_ID = $quizzID;
+                $questionDB->save();
+                $questionDB->fresh();
+
+                $questionID = $questionDB->question_ID;
+
+                foreach( $answers as $answer ) {
+                    $answerDB = new Answer;
+                    $answerDB->is_right_answer = $answer[ 'isRightAnswer' ];
+                    $answerDB->content = $answer[ 'content' ];
+                    $answerDB->question_ID = $questionID;
+                    $answerDB->save();
+                }
+
+                $numQuestion++;
+            }
+
+            DB::commit();
+
+        } catch( \Exception $e) {
+            DB::rollback();
+            $json = [
+                'success'           =>      false,
+                'title'             =>      'Server error',
+                'content'           =>      'Something was wrong. Please retry later.'
+            ];
+
+            return response()->json( $json );
+        }
+
         $json = [
-            'success'       =>          true,
-            'quizz_ID'      =>          $quizz->quizz_ID,
-            'title'         =>          'Quizz created !',
-            'content'       =>          'Your quizz is created ! Now, you can create your questions and answers !'
+            'success'               =>          true,
+            'title'                 =>          'Creation of quizz',
+            'content'               =>          'Quizz created with success.'
         ];
-
         return response()->json( $json );
 
+    }
+
+    // verify if a question has one AND only one right answer
+    private function hasOneRightAnswer( $question ) {
+        $answers = $question[ 'answers' ];
+        $count = 0;
+
+        foreach( $answers as $answer ) {
+            if( $answer[ 'isRightAnswer' ] ) {
+                $count++;
+            }
+        }
+
+        return $count === 1;
     }
 
     public function quizzes(Request $request) {
@@ -107,23 +170,22 @@ class QuizzController extends Controller {
             $answers = $question->answers;
 
             foreach( $answers as $answer ) {
-                $key = 'answer' . $answer->answer_ID;
-                $answersJSON[ $key ] = [
+                array_push( $answersJSON, [
                     'answerID'          =>          $answer->answer_ID,
                     'content'           =>          $answer->content,
                     'isRightAnswer'     =>          $answer->isRightAnswer,
                     'isDirty'           =>          false,
                     'isNew'             =>          false
-                ];
+                ] );
             }
 
-            $key = 'question' . $question->question_ID;
-            $questionsJSON[ $key ] = [
+            array_push( $questionsJSON, [
                 'questionID'            =>          $question->question_ID,
                 'content'               =>          $question->content,
                 'isNew'                 =>          false,
-                'isDirty'               =>          false
-            ];
+                'isDirty'               =>          false,
+                'answers'               =>          $answersJSON,
+            ] );
         }
 
         $quizzJSON[ 'questions' ] = $questionsJSON;

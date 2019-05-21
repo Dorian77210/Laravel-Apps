@@ -46,7 +46,8 @@ class QuizzContainer extends Component {
                         isActive: false,
                         title: '',
                         isNew: true,
-                        isDirty: false
+                        isDirty: false,
+                        resume: ''
                     },
                     questions: []
                 },
@@ -66,7 +67,6 @@ class QuizzContainer extends Component {
                         this.setState({
                             quizz: quizz,
                             loading: false,
-                            maxQuestionID: Object.keys(quizz.questions).length
                         });
                     } else {
                         this.props.history.push('/error');
@@ -238,6 +238,20 @@ class QuizzContainer extends Component {
 
         axios.post( '/user/quizzes/create', this.state.quizz )
              .then( res => {
+                const data = res.data;
+                if( !data.success ) {
+
+                } else {
+
+                }
+
+                console.log(data);
+
+                modal.setState( {
+                    show:       true,
+                    title:      data.title,
+                    content:    data.content
+                } );
 
              } )
              .catch( error => {
